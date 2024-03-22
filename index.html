@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Nuclia Search Example</title>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+  </head>
+  <body>
+    <div>
+
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <h1>This is an example how to integrate search</h1>
+            <div id="app">
+                <div>
+                    <select v-model="selectedModel" @change="changeModel()">
+                        <option v-for="model in models" :value="model.name">{{model.name}}</option>
+                    </select>
+                    <h4>Selected model key: {{selectedModel}}</div>
+                </div>
+            </div>
+
+            <script>
+            const { createApp, ref } = Vue
+
+            createApp({
+                methods: {
+                    async getModels() {
+                        const response = await fetch('https://api.nuclia.cloud/v1/models')
+                        const data = await response.json()
+                        this.models = data.models
+                    },
+                    changeModel() {
+                        console.log(this.selectedModel)
+                        window.selectedModel = this.selectedModel;
+                    },
+                },
+                data(): {
+                    return {
+                        models: [
+                            {key: 1, name: "chatgpt-azure"},
+                            {key: 2, name: "chatgpt-azure-3"},
+                            {key: 3, name: "Claude-3"},
+                            {key: 4, name: "gemini-pro"},
+                        ],
+                        selectedModel: "Pchatgpt-azure-3"
+                    }
+                },
+            }).mount('#app')
+            </script>
+    <script src="https://cdn.nuclia.cloud/nuclia-video-widget.umd.js"></script>
+    <nuclia-search-bar 
+      knowledgebox="f08a00d7-4348-4730-9b77-7fa0bc21851c"
+      zone="aws-us-east-2-1"
+      features="answers,useSynonyms,permalink,navigateToLink,navigateToFile" 
+      generativemodel="chatgpt-azure-3"
+      state="PRIVATE"
+      account="0b565f7e-9b58-419b-9e1d-83e1e138bff8"
+      kbslug="basic"
+      apikey="API_TOKEN"></nuclia-search-bar>
+        <nuclia-search-results ></nuclia-search-results>
+</html>
