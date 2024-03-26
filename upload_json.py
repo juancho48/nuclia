@@ -13,17 +13,17 @@ def upload(row):
     upload.link(uri=row['url'])
     print(f'Uploading {row["url"]}')
 
-def links_in_kb():
+def resources_in_kb():
     kb = sdk.NucliaKB()
     resources = kb.list(interactive=False)
-    just_titles =  [x.title for x in resources.resources] # return a dictionary of resources
+    just_titles =  [x.title for x in resources.resources] # return a dictionary of resources titles
     return just_titles
 
 def title_in_dict(myList, title):
     return any(s for s in myList if title in s)
 
-def read_json(path):
-    existingList = links_in_kb()
+def upload_resources_from_json(path):
+    existingList = resources_in_kb()
     with open(path) as jsonfile:
         # create a reader for a json type file and read the file
         data = json.load(jsonfile)
@@ -38,4 +38,4 @@ def read_json(path):
                 upload(row)
 
 if __name__ == "__main__":
-    read_json('wikis.json')
+    upload_resources_from_json('wikis.json')
